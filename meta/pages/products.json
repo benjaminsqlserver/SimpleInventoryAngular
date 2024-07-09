@@ -1,0 +1,230 @@
+{
+  "components": [
+    {
+      "type": "content",
+      "container": "main",
+      "components": [
+        {
+          "type": "heading",
+          "name": "pageTitle",
+          "size": "H1",
+          "text": "Products"
+        },
+        {
+          "type": "row",
+          "components": [
+            {
+              "type": "col",
+              "class": "col-md-12",
+              "components": [
+                {
+                  "name": "grid0",
+                  "allowDelete": true,
+                  "confirmDelete": true,
+                  "allowAdd": true,
+                  "allowFiltering": true,
+                  "allowMultiSorting": false,
+                  "allowPaging": true,
+                  "allowSorting": true,
+                  "count": "${getProductsCount}",
+                  "data": "${getProductsResult}",
+                  "events": {
+                    "loadData": [
+                      {
+                        "name": "ConData.getProducts",
+                        "parameters": [
+                          {
+                            "name": "$top",
+                            "value": "event.top"
+                          },
+                          {
+                            "name": "$skip",
+                            "value": "event.skip"
+                          },
+                          {
+                            "name": "$count",
+                            "value": "event.top != null && event.skip != null"
+                          },
+                          {
+                            "name": "$filter",
+                            "value": "${event.filter}"
+                          },
+                          {
+                            "name": "$orderby",
+                            "value": "${event.orderby}"
+                          },
+                          {
+                            "name": "$expand",
+                            "value": "Supplier,Category"
+                          }
+                        ],
+                        "then": [
+                          {
+                            "name": "getProductsResult",
+                            "type": "set",
+                            "value": "${result.value}"
+                          },
+                          {
+                            "name": "getProductsCount",
+                            "type": "set",
+                            "value": "event.top != null && event.skip != null ? result['@odata.count'] : ${result.value.length}"
+                          }
+                        ],
+                        "type": "invoke",
+                        "error": [
+                          {
+                            "detail": "Unable to load Products",
+                            "severity": "error",
+                            "summary": "Error",
+                            "type": "notify"
+                          }
+                        ]
+                      }
+                    ],
+                    "delete": [
+                      {
+                        "error": [
+                          {
+                            "detail": "Unable to delete Product",
+                            "severity": "error",
+                            "summary": "Error",
+                            "type": "notify"
+                          }
+                        ],
+                        "name": "ConData.deleteProduct",
+                        "parameters": [
+                          {
+                            "name": "ProductID",
+                            "value": "${event.ProductID}"
+                          }
+                        ],
+                        "then": [
+                          {
+                            "detail": "Product deleted!",
+                            "severity": "success",
+                            "summary": "Success",
+                            "type": "notify"
+                          }
+                        ],
+                        "type": "invoke"
+                      }
+                    ],
+                    "add": [
+                      {
+                        "path": "add-product",
+                        "type": "popup"
+                      }
+                    ],
+                    "rowSelect": [
+                      {
+                        "parameters": [
+                          {
+                            "name": "ProductID",
+                            "value": "${event.ProductID}"
+                          }
+                        ],
+                        "path": "edit-product",
+                        "type": "popup"
+                      }
+                    ]
+                  },
+                  "title": "",
+                  "columns": [
+                    {
+                      "property": "ProductID",
+                      "title": "Product ID",
+                      "type": "integer"
+                    },
+                    {
+                      "property": "ProductName",
+                      "title": "Product Name",
+                      "type": "string"
+                    },
+                    {
+                      "property": "SupplierID",
+                      "sortProperty": "Supplier.SupplierName",
+                      "filterProperty": "Supplier.SupplierName",
+                      "template": "${data.Supplier?.SupplierName}",
+                      "title": "Supplier",
+                      "type": "string"
+                    },
+                    {
+                      "property": "CategoryID",
+                      "sortProperty": "Category.CategoryName",
+                      "filterProperty": "Category.CategoryName",
+                      "template": "${data.Category?.CategoryName}",
+                      "title": "Category",
+                      "type": "string"
+                    },
+                    {
+                      "property": "QuantityPerUnit",
+                      "title": "Quantity Per Unit",
+                      "type": "string"
+                    },
+                    {
+                      "property": "UnitPrice",
+                      "title": "Unit Price",
+                      "type": "number",
+                      "format": "decimal"
+                    },
+                    {
+                      "property": "UnitsInStock",
+                      "title": "Units In Stock",
+                      "type": "integer"
+                    },
+                    {
+                      "property": "UnitsOnOrder",
+                      "title": "Units On Order",
+                      "type": "integer"
+                    },
+                    {
+                      "property": "ReorderLevel",
+                      "title": "Reorder Level",
+                      "type": "integer"
+                    },
+                    {
+                      "property": "Discontinued",
+                      "title": "Discontinued",
+                      "type": "boolean"
+                    }
+                  ],
+                  "type": "grid",
+                  "confirmDeleteText": "Are you sure you want to delete this record?",
+                  "confirmDeleteTitle": "Confirmation",
+                  "confirmDeleteOkText": "Ok",
+                  "confirmDeleteCancelText": "Cancel",
+                  "emptyText": "No records to display.",
+                  "addText": "Add",
+                  "clearFilterText": "Clear",
+                  "applyFilterText": "Apply",
+                  "equalsText": "Equals",
+                  "notEqualsText": "Not equals",
+                  "lessThanText": "Less than",
+                  "lessThanOrEqualsText": "Less than or equals",
+                  "greaterThanText": "Greater than",
+                  "greaterThanOrEqualsText": "Greater than or equals",
+                  "endsWithText": "Ends with",
+                  "containsText": "Contains",
+                  "startsWithText": "Starts with"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "events": {
+    "load": [
+      {
+        "type": "execute",
+        "code": "this.grid0.load();"
+      }
+    ]
+  },
+  "name": "Products",
+  "layout": "Main",
+  "access": [
+    "SuperAdmin"
+  ]
+}

@@ -1,0 +1,108 @@
+<rz-content #content1 container="main">
+  <div [ngStyle]="{}" class="row">
+    <div class="col-md-9">
+      <rz-label #closeLabel [style]="{'fontWeight': 'bold'}" text="Item no longer available." *ngIf="!canEdit">
+      </rz-label>
+    </div>
+    <div class="col-md-3">
+      <rz-button #closeButton buttonStyle="secondary" [style]="{'marginBottom': '20px'}" text="Close" *ngIf="!canEdit" (click)="closeButtonClick($event)">
+      </rz-button>
+    </div>
+  </div>
+  <div [ngStyle]="{}" class="row">
+    <div class="col-md-9">
+      <rz-label #label0 [style]="{'fontWeight': 'bold'}" text="Another user has made conflicting changes to one or more of the fields you have modified. Please reload." *ngIf="hasChanges">
+      </rz-label>
+    </div>
+    <div class="col-md-3">
+      <rz-button #button0 buttonStyle="secondary" icon="autorenew" [style]="{'marginBottom': '20px'}" text="Reload" *ngIf="hasChanges" (click)="button0Click($event)">
+      </rz-button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <rz-template-form #form0 (submit)="form0Submit($event)">
+        <div [ngStyle]="{'marginBottom': '1rem'}" class="row">
+          <div class="col-md-3">
+            <rz-label #supplierNameLabel text="Supplier Name" component="SupplierName" [style]="{'width': '100%'}">
+            </rz-label>
+          </div>
+          <div class="col-md-9">
+            <rz-textbox #supplierName [maxLength]="100" [style]="{'display': 'block', 'width': '100%'}" [(ngModel)]="supplier && supplier.SupplierName" name="SupplierName">
+            </rz-textbox>
+            <rz-required-validator #supplierNameRequiredValidator [component]="supplierName" text="SupplierName is required" [style]="{'position': 'absolute'}">
+            </rz-required-validator>
+          </div>
+        </div>
+        <div [ngStyle]="{'marginBottom': '1rem'}" class="row">
+          <div class="col-md-3">
+            <rz-label #contactNameLabel text="Contact Name" component="ContactName" [style]="{'width': '100%'}">
+            </rz-label>
+          </div>
+          <div class="col-md-9">
+            <rz-textbox #contactName [maxLength]="100" [style]="{'width': '100%'}" [(ngModel)]="supplier && supplier.ContactName" name="ContactName">
+            </rz-textbox>
+          </div>
+        </div>
+        <div [ngStyle]="{'marginBottom': '1rem'}" class="row">
+          <div class="col-md-3">
+            <rz-label #addressLabel text="Address" component="Address" [style]="{'width': '100%'}">
+            </rz-label>
+          </div>
+          <div class="col-md-9">
+            <rz-textbox #address [maxLength]="255" [style]="{'width': '100%'}" [(ngModel)]="supplier && supplier.Address" name="Address">
+            </rz-textbox>
+          </div>
+        </div>
+        <div [ngStyle]="{'marginBottom': '1rem'}" class="row">
+          <div class="col-md-3">
+            <rz-label #cityLabel text="City" component="City" [style]="{'width': '100%'}">
+            </rz-label>
+          </div>
+          <div class="col-md-9">
+            <rz-textbox #city [maxLength]="50" [style]="{'width': '100%'}" [(ngModel)]="supplier && supplier.City" name="City">
+            </rz-textbox>
+          </div>
+        </div>
+        <div [ngStyle]="{'marginBottom': '1rem'}" class="row">
+          <div class="col-md-3">
+            <rz-label #postalCodeLabel text="Postal Code" component="PostalCode" [style]="{'width': '100%'}">
+            </rz-label>
+          </div>
+          <div class="col-md-9">
+            <rz-textbox #postalCode [maxLength]="20" [style]="{'width': '100%'}" [(ngModel)]="supplier && supplier.PostalCode" name="PostalCode">
+            </rz-textbox>
+          </div>
+        </div>
+        <div [ngStyle]="{'marginBottom': '1rem'}" class="row">
+          <div class="col-md-3">
+            <rz-label #countryLabel text="Country" component="Country" [style]="{'width': '100%'}">
+            </rz-label>
+          </div>
+          <div class="col-md-9">
+            <rz-textbox #country [maxLength]="50" [style]="{'width': '100%'}" [(ngModel)]="supplier && supplier.Country" name="Country">
+            </rz-textbox>
+          </div>
+        </div>
+        <div [ngStyle]="{'marginBottom': '1rem'}" class="row">
+          <div class="col-md-3">
+            <rz-label #phoneLabel text="Phone" component="Phone" [style]="{'width': '100%'}">
+            </rz-label>
+          </div>
+          <div class="col-md-9">
+            <rz-textbox #phone [maxLength]="50" [style]="{'width': '100%'}" [(ngModel)]="supplier && supplier.Phone" name="Phone">
+            </rz-textbox>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col offset-sm-3">
+            <rz-button #button3 buttonType="submit" icon="save" text="Save" buttonStyle="primary">
+            </rz-button>
+            <rz-button #button4 buttonStyle="light" [style]="{'marginLeft': '1rem'}" text="Cancel" (click)="button4Click($event)">
+            </rz-button>
+          </div>
+        </div>
+      </rz-template-form>
+    </div>
+  </div>
+</rz-content>

@@ -1,0 +1,203 @@
+{
+  "components": [
+    {
+      "type": "content",
+      "container": "main",
+      "components": [
+        {
+          "type": "heading",
+          "name": "pageTitle",
+          "size": "H1",
+          "text": "Inventory Transactions"
+        },
+        {
+          "type": "row",
+          "components": [
+            {
+              "type": "col",
+              "class": "col-md-12",
+              "components": [
+                {
+                  "name": "grid0",
+                  "allowDelete": true,
+                  "confirmDelete": true,
+                  "allowAdd": true,
+                  "allowFiltering": true,
+                  "allowMultiSorting": false,
+                  "allowPaging": true,
+                  "allowSorting": true,
+                  "count": "${getInventoryTransactionsCount}",
+                  "data": "${getInventoryTransactionsResult}",
+                  "events": {
+                    "loadData": [
+                      {
+                        "name": "ConData.getInventoryTransactions",
+                        "parameters": [
+                          {
+                            "name": "$top",
+                            "value": "event.top"
+                          },
+                          {
+                            "name": "$skip",
+                            "value": "event.skip"
+                          },
+                          {
+                            "name": "$count",
+                            "value": "event.top != null && event.skip != null"
+                          },
+                          {
+                            "name": "$filter",
+                            "value": "${event.filter}"
+                          },
+                          {
+                            "name": "$orderby",
+                            "value": "${event.orderby}"
+                          },
+                          {
+                            "name": "$expand",
+                            "value": "Product"
+                          }
+                        ],
+                        "then": [
+                          {
+                            "name": "getInventoryTransactionsResult",
+                            "type": "set",
+                            "value": "${result.value}"
+                          },
+                          {
+                            "name": "getInventoryTransactionsCount",
+                            "type": "set",
+                            "value": "event.top != null && event.skip != null ? result['@odata.count'] : ${result.value.length}"
+                          }
+                        ],
+                        "type": "invoke",
+                        "error": [
+                          {
+                            "detail": "Unable to load InventoryTransactions",
+                            "severity": "error",
+                            "summary": "Error",
+                            "type": "notify"
+                          }
+                        ]
+                      }
+                    ],
+                    "delete": [
+                      {
+                        "error": [
+                          {
+                            "detail": "Unable to delete InventoryTransaction",
+                            "severity": "error",
+                            "summary": "Error",
+                            "type": "notify"
+                          }
+                        ],
+                        "name": "ConData.deleteInventoryTransaction",
+                        "parameters": [
+                          {
+                            "name": "TransactionID",
+                            "value": "${event.TransactionID}"
+                          }
+                        ],
+                        "then": [
+                          {
+                            "detail": "InventoryTransaction deleted!",
+                            "severity": "success",
+                            "summary": "Success",
+                            "type": "notify"
+                          }
+                        ],
+                        "type": "invoke"
+                      }
+                    ],
+                    "add": [
+                      {
+                        "path": "add-inventory-transaction",
+                        "type": "popup"
+                      }
+                    ],
+                    "rowSelect": [
+                      {
+                        "parameters": [
+                          {
+                            "name": "TransactionID",
+                            "value": "${event.TransactionID}"
+                          }
+                        ],
+                        "path": "edit-inventory-transaction",
+                        "type": "popup"
+                      }
+                    ]
+                  },
+                  "title": "",
+                  "columns": [
+                    {
+                      "property": "TransactionID",
+                      "title": "Transaction ID",
+                      "type": "integer"
+                    },
+                    {
+                      "property": "ProductID",
+                      "sortProperty": "Product.ProductName",
+                      "filterProperty": "Product.ProductName",
+                      "template": "${data.Product?.ProductName}",
+                      "title": "Product",
+                      "type": "string"
+                    },
+                    {
+                      "property": "Quantity",
+                      "title": "Quantity",
+                      "type": "integer"
+                    },
+                    {
+                      "property": "TransactionDate",
+                      "formatString": "medium",
+                      "title": "Transaction Date",
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    {
+                      "property": "TransactionType",
+                      "title": "Transaction Type",
+                      "type": "string"
+                    }
+                  ],
+                  "type": "grid",
+                  "confirmDeleteText": "Are you sure you want to delete this record?",
+                  "confirmDeleteTitle": "Confirmation",
+                  "confirmDeleteOkText": "Ok",
+                  "confirmDeleteCancelText": "Cancel",
+                  "emptyText": "No records to display.",
+                  "addText": "Add",
+                  "clearFilterText": "Clear",
+                  "applyFilterText": "Apply",
+                  "equalsText": "Equals",
+                  "notEqualsText": "Not equals",
+                  "lessThanText": "Less than",
+                  "lessThanOrEqualsText": "Less than or equals",
+                  "greaterThanText": "Greater than",
+                  "greaterThanOrEqualsText": "Greater than or equals",
+                  "endsWithText": "Ends with",
+                  "containsText": "Contains",
+                  "startsWithText": "Starts with"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "events": {
+    "load": [
+      {
+        "type": "execute",
+        "code": "this.grid0.load();"
+      }
+    ]
+  },
+  "name": "Inventory Transactions",
+  "layout": "Main",
+  "access": [
+    "Authenticated"
+  ]
+}

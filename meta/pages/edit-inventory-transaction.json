@@ -1,0 +1,528 @@
+{
+  "components": [
+    {
+      "type": "content",
+      "container": "main",
+      "components": [
+        {
+          "components": [
+            {
+              "class": "col-md-9",
+              "components": [
+                {
+                  "name": "closeLabel",
+                  "style": {
+                    "fontWeight": "bold"
+                  },
+                  "text": "Item no longer available.",
+                  "type": "label",
+                  "visible": "${!canEdit}"
+                }
+              ],
+              "name": "col0",
+              "type": "col"
+            },
+            {
+              "class": "col-md-3",
+              "components": [
+                {
+                  "buttonStyle": "secondary",
+                  "events": {
+                    "click": [
+                      {
+                        "type": "back"
+                      }
+                    ]
+                  },
+                  "icon": "",
+                  "name": "closeButton",
+                  "style": {
+                    "marginBottom": "20px"
+                  },
+                  "text": "Close",
+                  "type": "button",
+                  "visible": "${!canEdit}"
+                }
+              ],
+              "name": "col1",
+              "type": "col"
+            }
+          ],
+          "name": "row0",
+          "style": {},
+          "type": "row"
+        },
+        {
+          "components": [
+            {
+              "class": "col-md-9",
+              "components": [
+                {
+                  "name": "label0",
+                  "style": {
+                    "fontWeight": "bold"
+                  },
+                  "text": "Another user has made conflicting changes to one or more of the fields you have modified. Please reload.",
+                  "type": "label",
+                  "visible": "${hasChanges}"
+                }
+              ],
+              "name": "col0",
+              "type": "col"
+            },
+            {
+              "class": "col-md-3",
+              "components": [
+                {
+                  "buttonStyle": "secondary",
+                  "events": {
+                    "click": [
+                      {
+                        "code": "this.load()",
+                        "type": "execute"
+                      }
+                    ]
+                  },
+                  "icon": "autorenew",
+                  "name": "button0",
+                  "style": {
+                    "marginBottom": "20px"
+                  },
+                  "text": "Reload",
+                  "type": "button",
+                  "visible": "${hasChanges}"
+                }
+              ],
+              "name": "col1",
+              "type": "col"
+            }
+          ],
+          "name": "row0",
+          "style": {},
+          "type": "row"
+        },
+        {
+          "type": "row",
+          "components": [
+            {
+              "type": "col",
+              "class": "col-md-12",
+              "components": [
+                {
+                  "type": "template-form",
+                  "name": "form0",
+                  "components": [
+                    {
+                      "type": "row",
+                      "style": {
+                        "marginBottom": "1rem"
+                      },
+                      "components": [
+                        {
+                          "type": "col",
+                          "class": "col-md-3",
+                          "components": [
+                            {
+                              "type": "label",
+                              "text": "Product",
+                              "component": "ProductID",
+                              "name": "ProductIDLabel",
+                              "style": {
+                                "width": "100%"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "col",
+                          "class": "col-md-9",
+                          "components": [
+                            {
+                              "data": "${getProductsForProductIDResult}",
+                              "textProperty": "ProductName",
+                              "valueProperty": "ProductID",
+                              "placeholder": "Choose Product",
+                              "count": "${getProductsForProductIDCount}",
+                              "pageSize": "${getProductsForProductIDPageSize}",
+                              "value": "${inventorytransaction.ProductID}",
+                              "type": "dropdown-datagrid",
+                              "name": "ProductID",
+                              "style": {
+                                "display": "block",
+                                "width": "100%"
+                              },
+                              "selectedValue": "${getByProductsForProductIDResult}",
+                              "events": {
+                                "loadData": [
+                                  {
+                                    "name": "ConData.getProducts",
+                                    "parameters": [
+                                      {
+                                        "name": "$top",
+                                        "value": "${event.top}"
+                                      },
+                                      {
+                                        "name": "$skip",
+                                        "value": "${event.skip}"
+                                      },
+                                      {
+                                        "name": "$orderby",
+                                        "value": "${event.orderby}"
+                                      },
+                                      {
+                                        "name": "$filter",
+                                        "value": "${event.filter}"
+                                      },
+                                      {
+                                        "name": "$count",
+                                        "value": "true"
+                                      }
+                                    ],
+                                    "then": [
+                                      {
+                                        "name": "getProductsForProductIDResult",
+                                        "type": "set",
+                                        "value": "${result.value}"
+                                      },
+                                      {
+                                        "name": "getProductsForProductIDCount",
+                                        "type": "set",
+                                        "value": "result['@odata.count']"
+                                      }
+                                    ],
+                                    "type": "invoke"
+                                  }
+                                ]
+                              },
+                              "emptyText": "No records to display.",
+                              "searchText": "Search..."
+                            },
+                            {
+                              "type": "required-validator",
+                              "name": "ProductIDRequiredValidator",
+                              "component": "ProductID",
+                              "text": "ProductID is required",
+                              "style": {
+                                "position": "absolute"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "row",
+                      "style": {
+                        "marginBottom": "1rem"
+                      },
+                      "components": [
+                        {
+                          "type": "col",
+                          "class": "col-md-3",
+                          "components": [
+                            {
+                              "type": "label",
+                              "text": "Quantity",
+                              "component": "Quantity",
+                              "name": "QuantityLabel",
+                              "style": {
+                                "width": "100%"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "col",
+                          "class": "col-md-9",
+                          "components": [
+                            {
+                              "type": "numeric",
+                              "name": "Quantity",
+                              "style": {
+                                "display": "block",
+                                "width": "100%"
+                              },
+                              "value": "${inventorytransaction.Quantity}"
+                            },
+                            {
+                              "type": "required-validator",
+                              "name": "QuantityRequiredValidator",
+                              "component": "Quantity",
+                              "text": "Quantity is required",
+                              "style": {
+                                "position": "absolute"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "row",
+                      "style": {
+                        "marginBottom": "1rem"
+                      },
+                      "components": [
+                        {
+                          "type": "col",
+                          "class": "col-md-3",
+                          "components": [
+                            {
+                              "type": "label",
+                              "text": "Transaction Date",
+                              "component": "TransactionDate",
+                              "name": "TransactionDateLabel",
+                              "style": {
+                                "width": "100%"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "col",
+                          "class": "col-md-9",
+                          "components": [
+                            {
+                              "type": "datepicker",
+                              "name": "TransactionDate",
+                              "style": {
+                                "width": "100%"
+                              },
+                              "value": "${inventorytransaction.TransactionDate}"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "row",
+                      "style": {
+                        "marginBottom": "1rem"
+                      },
+                      "components": [
+                        {
+                          "type": "col",
+                          "class": "col-md-3",
+                          "components": [
+                            {
+                              "type": "label",
+                              "text": "Transaction Type",
+                              "component": "TransactionType",
+                              "name": "TransactionTypeLabel",
+                              "style": {
+                                "width": "100%"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "col",
+                          "class": "col-md-9",
+                          "components": [
+                            {
+                              "maxLength": 20,
+                              "type": "textbox",
+                              "name": "TransactionType",
+                              "style": {
+                                "display": "block",
+                                "width": "100%"
+                              },
+                              "value": "${inventorytransaction.TransactionType}"
+                            },
+                            {
+                              "type": "required-validator",
+                              "name": "TransactionTypeRequiredValidator",
+                              "component": "TransactionType",
+                              "text": "TransactionType is required",
+                              "style": {
+                                "position": "absolute"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "row",
+                      "components": [
+                        {
+                          "type": "col",
+                          "class": "col offset-sm-3",
+                          "components": [
+                            {
+                              "type": "button",
+                              "buttonType": "submit",
+                              "icon": "save",
+                              "text": "Save",
+                              "buttonStyle": "primary"
+                            },
+                            {
+                              "type": "button",
+                              "buttonStyle": "light",
+                              "style": {
+                                "marginLeft": "1rem"
+                              },
+                              "text": "Cancel",
+                              "events": {
+                                "click": [
+                                  {
+                                    "type": "back"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "events": {
+                    "submit": [
+                      {
+                        "error": [
+                          {
+                            "name": "hasChanges",
+                            "type": "set",
+                            "value": "result.status == 412"
+                          },
+                          {
+                            "name": "canEdit",
+                            "type": "set",
+                            "value": "!(result.status == 400)"
+                          },
+                          {
+                            "detail": "Unable to update InventoryTransaction",
+                            "severity": "error",
+                            "summary": "Error",
+                            "type": "notify"
+                          }
+                        ],
+                        "name": "ConData.updateInventoryTransaction",
+                        "parameters": [
+                          {
+                            "name": "TransactionID",
+                            "value": "${parameters.TransactionID}"
+                          },
+                          {
+                            "name": "InventoryTransaction",
+                            "value": "${event}"
+                          },
+                          {
+                            "name": "$expand",
+                            "value": "Product"
+                          }
+                        ],
+                        "then": [
+                          {
+                            "type": "back"
+                          }
+                        ],
+                        "type": "invoke"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "events": {
+    "load": [
+      {
+        "name": "hasChanges",
+        "type": "set",
+        "value": "false"
+      },
+      {
+        "name": "canEdit",
+        "type": "set",
+        "value": "true"
+      },
+      {
+        "name": "ConData.getInventoryTransactionByTransactionID",
+        "parameters": [
+          {
+            "name": "TransactionID",
+            "value": "${parameters.TransactionID}"
+          }
+        ],
+        "then": [
+          {
+            "name": "inventorytransaction",
+            "type": "set",
+            "value": "${result}"
+          },
+          {
+            "name": "ConData.getProductByProductID",
+            "parameters": [
+              {
+                "name": "ProductID",
+                "value": "${this.inventorytransaction.ProductID}"
+              }
+            ],
+            "then": [
+              {
+                "name": "getByProductsForProductIDResult",
+                "type": "set",
+                "value": "${result}"
+              }
+            ],
+            "condition": "this.inventorytransaction.ProductID != null",
+            "type": "invoke"
+          }
+        ],
+        "error": [
+          {
+            "name": "canEdit",
+            "type": "set",
+            "value": "!(result.status == 400)"
+          }
+        ],
+        "type": "invoke"
+      },
+      {
+        "name": "getProductsForProductIDPageSize",
+        "type": "set",
+        "value": "10"
+      },
+      {
+        "name": "ConData.getProducts",
+        "parameters": [
+          {
+            "name": "$top",
+            "value": "${getProductsForProductIDPageSize}"
+          },
+          {
+            "name": "$skip",
+            "value": "0"
+          },
+          {
+            "name": "$count",
+            "value": "true"
+          }
+        ],
+        "then": [
+          {
+            "name": "getProductsForProductIDResult",
+            "type": "set",
+            "value": "${result.value}"
+          },
+          {
+            "name": "getProductsForProductIDCount",
+            "type": "set",
+            "value": "result['@odata.count']"
+          }
+        ],
+        "type": "invoke"
+      }
+    ]
+  },
+  "name": "Edit Inventory Transaction",
+  "layout": "Main",
+  "access": [
+    "Authenticated"
+  ]
+}

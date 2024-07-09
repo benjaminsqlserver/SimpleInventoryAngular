@@ -1,0 +1,209 @@
+{
+  "components": [
+    {
+      "type": "content",
+      "container": "main",
+      "components": [
+        {
+          "type": "heading",
+          "name": "pageTitle",
+          "size": "H1",
+          "text": "Suppliers"
+        },
+        {
+          "type": "row",
+          "components": [
+            {
+              "type": "col",
+              "class": "col-md-12",
+              "components": [
+                {
+                  "name": "grid0",
+                  "allowDelete": true,
+                  "confirmDelete": true,
+                  "allowAdd": true,
+                  "allowFiltering": true,
+                  "allowMultiSorting": false,
+                  "allowPaging": true,
+                  "allowSorting": true,
+                  "count": "${getSuppliersCount}",
+                  "data": "${getSuppliersResult}",
+                  "events": {
+                    "loadData": [
+                      {
+                        "name": "ConData.getSuppliers",
+                        "parameters": [
+                          {
+                            "name": "$top",
+                            "value": "event.top"
+                          },
+                          {
+                            "name": "$skip",
+                            "value": "event.skip"
+                          },
+                          {
+                            "name": "$count",
+                            "value": "event.top != null && event.skip != null"
+                          },
+                          {
+                            "name": "$filter",
+                            "value": "${event.filter}"
+                          },
+                          {
+                            "name": "$orderby",
+                            "value": "${event.orderby}"
+                          }
+                        ],
+                        "then": [
+                          {
+                            "name": "getSuppliersResult",
+                            "type": "set",
+                            "value": "${result.value}"
+                          },
+                          {
+                            "name": "getSuppliersCount",
+                            "type": "set",
+                            "value": "event.top != null && event.skip != null ? result['@odata.count'] : ${result.value.length}"
+                          }
+                        ],
+                        "type": "invoke",
+                        "error": [
+                          {
+                            "detail": "Unable to load Suppliers",
+                            "severity": "error",
+                            "summary": "Error",
+                            "type": "notify"
+                          }
+                        ]
+                      }
+                    ],
+                    "delete": [
+                      {
+                        "error": [
+                          {
+                            "detail": "Unable to delete Supplier",
+                            "severity": "error",
+                            "summary": "Error",
+                            "type": "notify"
+                          }
+                        ],
+                        "name": "ConData.deleteSupplier",
+                        "parameters": [
+                          {
+                            "name": "SupplierID",
+                            "value": "${event.SupplierID}"
+                          }
+                        ],
+                        "then": [
+                          {
+                            "detail": "Supplier deleted!",
+                            "severity": "success",
+                            "summary": "Success",
+                            "type": "notify"
+                          }
+                        ],
+                        "type": "invoke"
+                      }
+                    ],
+                    "add": [
+                      {
+                        "path": "add-supplier",
+                        "type": "popup"
+                      }
+                    ],
+                    "rowSelect": [
+                      {
+                        "parameters": [
+                          {
+                            "name": "SupplierID",
+                            "value": "${event.SupplierID}"
+                          }
+                        ],
+                        "path": "edit-supplier",
+                        "type": "popup"
+                      }
+                    ]
+                  },
+                  "title": "",
+                  "columns": [
+                    {
+                      "property": "SupplierID",
+                      "title": "Supplier ID",
+                      "type": "integer"
+                    },
+                    {
+                      "property": "SupplierName",
+                      "title": "Supplier Name",
+                      "type": "string"
+                    },
+                    {
+                      "property": "ContactName",
+                      "title": "Contact Name",
+                      "type": "string"
+                    },
+                    {
+                      "property": "Address",
+                      "title": "Address",
+                      "type": "string"
+                    },
+                    {
+                      "property": "City",
+                      "title": "City",
+                      "type": "string"
+                    },
+                    {
+                      "property": "PostalCode",
+                      "title": "Postal Code",
+                      "type": "string"
+                    },
+                    {
+                      "property": "Country",
+                      "title": "Country",
+                      "type": "string"
+                    },
+                    {
+                      "property": "Phone",
+                      "title": "Phone",
+                      "type": "string"
+                    }
+                  ],
+                  "type": "grid",
+                  "confirmDeleteText": "Are you sure you want to delete this record?",
+                  "confirmDeleteTitle": "Confirmation",
+                  "confirmDeleteOkText": "Ok",
+                  "confirmDeleteCancelText": "Cancel",
+                  "emptyText": "No records to display.",
+                  "addText": "Add",
+                  "clearFilterText": "Clear",
+                  "applyFilterText": "Apply",
+                  "equalsText": "Equals",
+                  "notEqualsText": "Not equals",
+                  "lessThanText": "Less than",
+                  "lessThanOrEqualsText": "Less than or equals",
+                  "greaterThanText": "Greater than",
+                  "greaterThanOrEqualsText": "Greater than or equals",
+                  "endsWithText": "Ends with",
+                  "containsText": "Contains",
+                  "startsWithText": "Starts with"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "events": {
+    "load": [
+      {
+        "type": "execute",
+        "code": "this.grid0.load();"
+      }
+    ]
+  },
+  "name": "Suppliers",
+  "layout": "Main",
+  "access": [
+    "SuperAdmin"
+  ]
+}

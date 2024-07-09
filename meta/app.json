@@ -1,0 +1,63 @@
+{
+  "dataSources": [
+    "ConData"
+  ],
+  "generator": "@radzen/angular-generator",
+  "https": false,
+  "layouts": [
+    "Login",
+    "Main"
+  ],
+  "logo": "",
+  "name": "InventoryManager",
+  "navigation": [
+    "Categories",
+    "Inventory Transactions",
+    "Products",
+    "Suppliers"
+  ],
+  "pages": [
+    "Categories",
+    "Add Category",
+    "Edit Category",
+    "Inventory Transactions",
+    "Add Inventory Transaction",
+    "Edit Inventory Transaction",
+    "Products",
+    "Add Product",
+    "Edit Product",
+    "Suppliers",
+    "Add Supplier",
+    "Edit Supplier",
+    "Application Users",
+    "Login",
+    "Application Roles",
+    "Add Application Role",
+    "Register Application User",
+    "Edit Application User",
+    "Add Application User",
+    "Profile",
+    "Unauthorized"
+  ],
+  "security": {
+    "autoGeneratePages": true,
+    "dataSource": "ConData",
+    "duration": 10,
+    "emailConfirmation": false,
+    "layout": "Main",
+    "loginLayout": "Login",
+    "loginPage": "Login",
+    "provider": "default",
+    "sessionRefresh": true,
+    "smtpFrom": "",
+    "smtpPassword": "",
+    "smtpSSL": false,
+    "smtpServer": "",
+    "smtpUser": ""
+  },
+  "serverLang": "cs",
+  "serverProject": true,
+  "serverVersion": "7",
+  "startPage": "Categories",
+  "theme": "ultima/green"
+}

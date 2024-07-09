@@ -1,0 +1,982 @@
+{
+  "info": {
+    "title": "ConData",
+    "x-type": "odata",
+    "x-connector": "mssql",
+    "x-connector-version": 14,
+    "x-concurrency": true,
+    "x-infer-aspnet": false,
+    "x-infer-tables": true,
+    "x-infer-relations": true,
+    "x-infer-views": true,
+    "x-infer-sps": true
+  },
+  "definitions": {
+    "Category": {
+      "x-table": "dbo.Categories",
+      "resource": "Categories",
+      "required": [
+        "CategoryName"
+      ],
+      "properties": {
+        "CategoryID": {
+          "x-key": true,
+          "x-identity": true,
+          "x-nullable": false,
+          "x-precision": 10,
+          "type": "integer",
+          "dbType": "int",
+          "x-navigation": [
+            {
+              "inversePropertyName": "Category",
+              "name": "Products",
+              "type": "Product"
+            }
+          ]
+        },
+        "CategoryName": {
+          "x-nullable": false,
+          "type": "string",
+          "dbType": "nvarchar",
+          "length": 50
+        },
+        "Products": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Product"
+          }
+        }
+      }
+    },
+    "InventoryTransaction": {
+      "x-table": "dbo.InventoryTransactions",
+      "resource": "InventoryTransactions",
+      "required": [
+        "ProductID",
+        "Quantity",
+        "TransactionType"
+      ],
+      "properties": {
+        "TransactionID": {
+          "x-key": true,
+          "x-identity": true,
+          "x-nullable": false,
+          "x-precision": 10,
+          "type": "integer",
+          "dbType": "int"
+        },
+        "Product": {
+          "type": "object",
+          "$ref": "#/definitions/Product"
+        },
+        "ProductID": {
+          "x-nullable": false,
+          "x-precision": 10,
+          "type": "integer",
+          "dbType": "int",
+          "x-foreignKey": {
+            "parentTable": "Products",
+            "parentEntityType": "Product",
+            "type": "Product",
+            "principalKey": "ProductID",
+            "name": "Product",
+            "textProperty": "ProductName",
+            "navigationProperty": "InventoryTransactions"
+          }
+        },
+        "Quantity": {
+          "x-nullable": false,
+          "x-precision": 10,
+          "type": "integer",
+          "dbType": "int"
+        },
+        "TransactionDate": {
+          "x-default-sql": "(getdate())",
+          "type": "string",
+          "format": "date-time",
+          "dbType": "datetime",
+          "x-datetime": "datetime"
+        },
+        "TransactionType": {
+          "x-nullable": false,
+          "type": "string",
+          "dbType": "nvarchar",
+          "length": 20
+        }
+      }
+    },
+    "Product": {
+      "x-table": "dbo.Products",
+      "resource": "Products",
+      "required": [
+        "ProductName",
+        "SupplierID",
+        "CategoryID"
+      ],
+      "properties": {
+        "ProductID": {
+          "x-key": true,
+          "x-identity": true,
+          "x-nullable": false,
+          "x-precision": 10,
+          "type": "integer",
+          "dbType": "int",
+          "x-navigation": [
+            {
+              "inversePropertyName": "Product",
+              "name": "InventoryTransactions",
+              "type": "InventoryTransaction"
+            }
+          ]
+        },
+        "ProductName": {
+          "x-nullable": false,
+          "type": "string",
+          "dbType": "nvarchar",
+          "length": 100
+        },
+        "Supplier": {
+          "type": "object",
+          "$ref": "#/definitions/Supplier"
+        },
+        "SupplierID": {
+          "x-nullable": false,
+          "x-precision": 10,
+          "type": "integer",
+          "dbType": "int",
+          "x-foreignKey": {
+            "parentTable": "Suppliers",
+            "parentEntityType": "Supplier",
+            "type": "Supplier",
+            "principalKey": "SupplierID",
+            "name": "Supplier",
+            "textProperty": "SupplierName",
+            "navigationProperty": "Products"
+          }
+        },
+        "Category": {
+          "type": "object",
+          "$ref": "#/definitions/Category"
+        },
+        "CategoryID": {
+          "x-nullable": false,
+          "x-precision": 10,
+          "type": "integer",
+          "dbType": "int",
+          "x-foreignKey": {
+            "parentTable": "Categories",
+            "parentEntityType": "Category",
+            "type": "Category",
+            "principalKey": "CategoryID",
+            "name": "Category",
+            "textProperty": "CategoryName",
+            "navigationProperty": "Products"
+          }
+        },
+        "QuantityPerUnit": {
+          "type": "string",
+          "dbType": "nvarchar",
+          "length": 50
+        },
+        "UnitPrice": {
+          "x-precision": 18,
+          "x-scale": 2,
+          "type": "number",
+          "format": "decimal",
+          "dbType": "decimal"
+        },
+        "UnitsInStock": {
+          "x-precision": 10,
+          "type": "integer",
+          "dbType": "int"
+        },
+        "UnitsOnOrder": {
+          "x-precision": 10,
+          "type": "integer",
+          "dbType": "int"
+        },
+        "ReorderLevel": {
+          "x-precision": 10,
+          "type": "integer",
+          "dbType": "int"
+        },
+        "Discontinued": {
+          "x-default-sql": "((0))",
+          "type": "boolean",
+          "dbType": "bit"
+        },
+        "InventoryTransactions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/InventoryTransaction"
+          }
+        }
+      }
+    },
+    "Supplier": {
+      "x-table": "dbo.Suppliers",
+      "resource": "Suppliers",
+      "required": [
+        "SupplierName"
+      ],
+      "properties": {
+        "SupplierID": {
+          "x-key": true,
+          "x-identity": true,
+          "x-nullable": false,
+          "x-precision": 10,
+          "type": "integer",
+          "dbType": "int",
+          "x-navigation": [
+            {
+              "inversePropertyName": "Supplier",
+              "name": "Products",
+              "type": "Product"
+            }
+          ]
+        },
+        "SupplierName": {
+          "x-nullable": false,
+          "type": "string",
+          "dbType": "nvarchar",
+          "length": 100
+        },
+        "ContactName": {
+          "type": "string",
+          "dbType": "nvarchar",
+          "length": 100
+        },
+        "Address": {
+          "type": "string",
+          "dbType": "nvarchar",
+          "length": 255
+        },
+        "City": {
+          "type": "string",
+          "dbType": "nvarchar",
+          "length": 50
+        },
+        "PostalCode": {
+          "type": "string",
+          "dbType": "nvarchar",
+          "length": 20
+        },
+        "Country": {
+          "type": "string",
+          "dbType": "nvarchar",
+          "length": 50
+        },
+        "Phone": {
+          "type": "string",
+          "dbType": "nvarchar",
+          "length": 50
+        },
+        "Products": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Product"
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/Categories": {
+      "get": {
+        "operationId": "getCategories",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$filter",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$top",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$skip",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$orderby",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$count",
+            "type": "boolean"
+          },
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$format",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$select",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "properties": {
+                "value": {
+                  "items": {
+                    "$ref": "#/definitions/Category"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createCategory",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "Category",
+            "schema": {
+              "$ref": "#/definitions/Category"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/Category"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/InventoryTransactions": {
+      "get": {
+        "operationId": "getInventoryTransactions",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$filter",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$top",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$skip",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$orderby",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$count",
+            "type": "boolean"
+          },
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$format",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$select",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "properties": {
+                "value": {
+                  "items": {
+                    "$ref": "#/definitions/InventoryTransaction"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createInventoryTransaction",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "InventoryTransaction",
+            "schema": {
+              "$ref": "#/definitions/InventoryTransaction"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/InventoryTransaction"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/Products": {
+      "get": {
+        "operationId": "getProducts",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$filter",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$top",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$skip",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$orderby",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$count",
+            "type": "boolean"
+          },
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$format",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$select",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "properties": {
+                "value": {
+                  "items": {
+                    "$ref": "#/definitions/Product"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createProduct",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "Product",
+            "schema": {
+              "$ref": "#/definitions/Product"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/Product"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/Suppliers": {
+      "get": {
+        "operationId": "getSuppliers",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$filter",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$top",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$skip",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$orderby",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$count",
+            "type": "boolean"
+          },
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$format",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$select",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "properties": {
+                "value": {
+                  "items": {
+                    "$ref": "#/definitions/Supplier"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createSupplier",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "Supplier",
+            "schema": {
+              "$ref": "#/definitions/Supplier"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/Supplier"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/Categories({CategoryID})": {
+      "delete": {
+        "operationId": "deleteCategory",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "CategoryID",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "getCategoryByCategoryID",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "CategoryID",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Category"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateCategory",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "CategoryID",
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "Category",
+            "schema": {
+              "$ref": "#/definitions/Category"
+            }
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/InventoryTransactions({TransactionID})": {
+      "delete": {
+        "operationId": "deleteInventoryTransaction",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "TransactionID",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "getInventoryTransactionByTransactionID",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "TransactionID",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/InventoryTransaction"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateInventoryTransaction",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "TransactionID",
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "InventoryTransaction",
+            "schema": {
+              "$ref": "#/definitions/InventoryTransaction"
+            }
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/Products({ProductID})": {
+      "delete": {
+        "operationId": "deleteProduct",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "ProductID",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "getProductByProductID",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "ProductID",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Product"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateProduct",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "ProductID",
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "Product",
+            "schema": {
+              "$ref": "#/definitions/Product"
+            }
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/Suppliers({SupplierID})": {
+      "delete": {
+        "operationId": "deleteSupplier",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "SupplierID",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "getSupplierBySupplierID",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "SupplierID",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Supplier"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateSupplier",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "SupplierID",
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "Supplier",
+            "schema": {
+              "$ref": "#/definitions/Supplier"
+            }
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    }
+  },
+  "basePath": "/odata/ConData",
+  "host": "localhost:5000",
+  "schemes": [
+    "http"
+  ]
+}

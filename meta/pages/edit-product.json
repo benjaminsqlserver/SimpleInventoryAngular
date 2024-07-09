@@ -1,0 +1,816 @@
+{
+  "components": [
+    {
+      "type": "content",
+      "container": "main",
+      "components": [
+        {
+          "components": [
+            {
+              "class": "col-md-9",
+              "components": [
+                {
+                  "name": "closeLabel",
+                  "style": {
+                    "fontWeight": "bold"
+                  },
+                  "text": "Item no longer available.",
+                  "type": "label",
+                  "visible": "${!canEdit}"
+                }
+              ],
+              "name": "col0",
+              "type": "col"
+            },
+            {
+              "class": "col-md-3",
+              "components": [
+                {
+                  "buttonStyle": "secondary",
+                  "events": {
+                    "click": [
+                      {
+                        "type": "back"
+                      }
+                    ]
+                  },
+                  "icon": "",
+                  "name": "closeButton",
+                  "style": {
+                    "marginBottom": "20px"
+                  },
+                  "text": "Close",
+                  "type": "button",
+                  "visible": "${!canEdit}"
+                }
+              ],
+              "name": "col1",
+              "type": "col"
+            }
+          ],
+          "name": "row0",
+          "style": {},
+          "type": "row"
+        },
+        {
+          "components": [
+            {
+              "class": "col-md-9",
+              "components": [
+                {
+                  "name": "label0",
+                  "style": {
+                    "fontWeight": "bold"
+                  },
+                  "text": "Another user has made conflicting changes to one or more of the fields you have modified. Please reload.",
+                  "type": "label",
+                  "visible": "${hasChanges}"
+                }
+              ],
+              "name": "col0",
+              "type": "col"
+            },
+            {
+              "class": "col-md-3",
+              "components": [
+                {
+                  "buttonStyle": "secondary",
+                  "events": {
+                    "click": [
+                      {
+                        "code": "this.load()",
+                        "type": "execute"
+                      }
+                    ]
+                  },
+                  "icon": "autorenew",
+                  "name": "button0",
+                  "style": {
+                    "marginBottom": "20px"
+                  },
+                  "text": "Reload",
+                  "type": "button",
+                  "visible": "${hasChanges}"
+                }
+              ],
+              "name": "col1",
+              "type": "col"
+            }
+          ],
+          "name": "row0",
+          "style": {},
+          "type": "row"
+        },
+        {
+          "type": "row",
+          "components": [
+            {
+              "type": "col",
+              "class": "col-md-12",
+              "components": [
+                {
+                  "type": "template-form",
+                  "name": "form0",
+                  "components": [
+                    {
+                      "type": "row",
+                      "style": {
+                        "marginBottom": "1rem"
+                      },
+                      "components": [
+                        {
+                          "type": "col",
+                          "class": "col-md-3",
+                          "components": [
+                            {
+                              "type": "label",
+                              "text": "Product Name",
+                              "component": "ProductName",
+                              "name": "ProductNameLabel",
+                              "style": {
+                                "width": "100%"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "col",
+                          "class": "col-md-9",
+                          "components": [
+                            {
+                              "maxLength": 100,
+                              "type": "textbox",
+                              "name": "ProductName",
+                              "style": {
+                                "display": "block",
+                                "width": "100%"
+                              },
+                              "value": "${product.ProductName}"
+                            },
+                            {
+                              "type": "required-validator",
+                              "name": "ProductNameRequiredValidator",
+                              "component": "ProductName",
+                              "text": "ProductName is required",
+                              "style": {
+                                "position": "absolute"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "row",
+                      "style": {
+                        "marginBottom": "1rem"
+                      },
+                      "components": [
+                        {
+                          "type": "col",
+                          "class": "col-md-3",
+                          "components": [
+                            {
+                              "type": "label",
+                              "text": "Supplier",
+                              "component": "SupplierID",
+                              "name": "SupplierIDLabel",
+                              "style": {
+                                "width": "100%"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "col",
+                          "class": "col-md-9",
+                          "components": [
+                            {
+                              "data": "${getSuppliersForSupplierIDResult}",
+                              "textProperty": "SupplierName",
+                              "valueProperty": "SupplierID",
+                              "placeholder": "Choose Supplier",
+                              "count": "${getSuppliersForSupplierIDCount}",
+                              "pageSize": "${getSuppliersForSupplierIDPageSize}",
+                              "value": "${product.SupplierID}",
+                              "type": "dropdown-datagrid",
+                              "name": "SupplierID",
+                              "style": {
+                                "display": "block",
+                                "width": "100%"
+                              },
+                              "selectedValue": "${getBySuppliersForSupplierIDResult}",
+                              "events": {
+                                "loadData": [
+                                  {
+                                    "name": "ConData.getSuppliers",
+                                    "parameters": [
+                                      {
+                                        "name": "$top",
+                                        "value": "${event.top}"
+                                      },
+                                      {
+                                        "name": "$skip",
+                                        "value": "${event.skip}"
+                                      },
+                                      {
+                                        "name": "$orderby",
+                                        "value": "${event.orderby}"
+                                      },
+                                      {
+                                        "name": "$filter",
+                                        "value": "${event.filter}"
+                                      },
+                                      {
+                                        "name": "$count",
+                                        "value": "true"
+                                      }
+                                    ],
+                                    "then": [
+                                      {
+                                        "name": "getSuppliersForSupplierIDResult",
+                                        "type": "set",
+                                        "value": "${result.value}"
+                                      },
+                                      {
+                                        "name": "getSuppliersForSupplierIDCount",
+                                        "type": "set",
+                                        "value": "result['@odata.count']"
+                                      }
+                                    ],
+                                    "type": "invoke"
+                                  }
+                                ]
+                              },
+                              "emptyText": "No records to display.",
+                              "searchText": "Search..."
+                            },
+                            {
+                              "type": "required-validator",
+                              "name": "SupplierIDRequiredValidator",
+                              "component": "SupplierID",
+                              "text": "SupplierID is required",
+                              "style": {
+                                "position": "absolute"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "row",
+                      "style": {
+                        "marginBottom": "1rem"
+                      },
+                      "components": [
+                        {
+                          "type": "col",
+                          "class": "col-md-3",
+                          "components": [
+                            {
+                              "type": "label",
+                              "text": "Category",
+                              "component": "CategoryID",
+                              "name": "CategoryIDLabel",
+                              "style": {
+                                "width": "100%"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "col",
+                          "class": "col-md-9",
+                          "components": [
+                            {
+                              "data": "${getCategoriesForCategoryIDResult}",
+                              "textProperty": "CategoryName",
+                              "valueProperty": "CategoryID",
+                              "placeholder": "Choose Category",
+                              "count": "${getCategoriesForCategoryIDCount}",
+                              "pageSize": "${getCategoriesForCategoryIDPageSize}",
+                              "value": "${product.CategoryID}",
+                              "type": "dropdown-datagrid",
+                              "name": "CategoryID",
+                              "style": {
+                                "display": "block",
+                                "width": "100%"
+                              },
+                              "selectedValue": "${getByCategoriesForCategoryIDResult}",
+                              "events": {
+                                "loadData": [
+                                  {
+                                    "name": "ConData.getCategories",
+                                    "parameters": [
+                                      {
+                                        "name": "$top",
+                                        "value": "${event.top}"
+                                      },
+                                      {
+                                        "name": "$skip",
+                                        "value": "${event.skip}"
+                                      },
+                                      {
+                                        "name": "$orderby",
+                                        "value": "${event.orderby}"
+                                      },
+                                      {
+                                        "name": "$filter",
+                                        "value": "${event.filter}"
+                                      },
+                                      {
+                                        "name": "$count",
+                                        "value": "true"
+                                      }
+                                    ],
+                                    "then": [
+                                      {
+                                        "name": "getCategoriesForCategoryIDResult",
+                                        "type": "set",
+                                        "value": "${result.value}"
+                                      },
+                                      {
+                                        "name": "getCategoriesForCategoryIDCount",
+                                        "type": "set",
+                                        "value": "result['@odata.count']"
+                                      }
+                                    ],
+                                    "type": "invoke"
+                                  }
+                                ]
+                              },
+                              "emptyText": "No records to display.",
+                              "searchText": "Search..."
+                            },
+                            {
+                              "type": "required-validator",
+                              "name": "CategoryIDRequiredValidator",
+                              "component": "CategoryID",
+                              "text": "CategoryID is required",
+                              "style": {
+                                "position": "absolute"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "row",
+                      "style": {
+                        "marginBottom": "1rem"
+                      },
+                      "components": [
+                        {
+                          "type": "col",
+                          "class": "col-md-3",
+                          "components": [
+                            {
+                              "type": "label",
+                              "text": "Quantity Per Unit",
+                              "component": "QuantityPerUnit",
+                              "name": "QuantityPerUnitLabel",
+                              "style": {
+                                "width": "100%"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "col",
+                          "class": "col-md-9",
+                          "components": [
+                            {
+                              "maxLength": 50,
+                              "type": "textbox",
+                              "name": "QuantityPerUnit",
+                              "style": {
+                                "width": "100%"
+                              },
+                              "value": "${product.QuantityPerUnit}"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "row",
+                      "style": {
+                        "marginBottom": "1rem"
+                      },
+                      "components": [
+                        {
+                          "type": "col",
+                          "class": "col-md-3",
+                          "components": [
+                            {
+                              "type": "label",
+                              "text": "Unit Price",
+                              "component": "UnitPrice",
+                              "name": "UnitPriceLabel",
+                              "style": {
+                                "width": "100%"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "col",
+                          "class": "col-md-9",
+                          "components": [
+                            {
+                              "type": "numeric",
+                              "name": "UnitPrice",
+                              "style": {
+                                "width": "100%"
+                              },
+                              "value": "${product.UnitPrice}"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "row",
+                      "style": {
+                        "marginBottom": "1rem"
+                      },
+                      "components": [
+                        {
+                          "type": "col",
+                          "class": "col-md-3",
+                          "components": [
+                            {
+                              "type": "label",
+                              "text": "Units In Stock",
+                              "component": "UnitsInStock",
+                              "name": "UnitsInStockLabel",
+                              "style": {
+                                "width": "100%"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "col",
+                          "class": "col-md-9",
+                          "components": [
+                            {
+                              "type": "numeric",
+                              "name": "UnitsInStock",
+                              "style": {
+                                "width": "100%"
+                              },
+                              "value": "${product.UnitsInStock}"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "row",
+                      "style": {
+                        "marginBottom": "1rem"
+                      },
+                      "components": [
+                        {
+                          "type": "col",
+                          "class": "col-md-3",
+                          "components": [
+                            {
+                              "type": "label",
+                              "text": "Units On Order",
+                              "component": "UnitsOnOrder",
+                              "name": "UnitsOnOrderLabel",
+                              "style": {
+                                "width": "100%"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "col",
+                          "class": "col-md-9",
+                          "components": [
+                            {
+                              "type": "numeric",
+                              "name": "UnitsOnOrder",
+                              "style": {
+                                "width": "100%"
+                              },
+                              "value": "${product.UnitsOnOrder}"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "row",
+                      "style": {
+                        "marginBottom": "1rem"
+                      },
+                      "components": [
+                        {
+                          "type": "col",
+                          "class": "col-md-3",
+                          "components": [
+                            {
+                              "type": "label",
+                              "text": "Reorder Level",
+                              "component": "ReorderLevel",
+                              "name": "ReorderLevelLabel",
+                              "style": {
+                                "width": "100%"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "col",
+                          "class": "col-md-9",
+                          "components": [
+                            {
+                              "type": "numeric",
+                              "name": "ReorderLevel",
+                              "style": {
+                                "width": "100%"
+                              },
+                              "value": "${product.ReorderLevel}"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "row",
+                      "style": {
+                        "marginBottom": "1rem"
+                      },
+                      "components": [
+                        {
+                          "type": "col",
+                          "class": "col-md-3",
+                          "components": [
+                            {
+                              "type": "label",
+                              "text": "Discontinued",
+                              "component": "Discontinued",
+                              "name": "DiscontinuedLabel",
+                              "style": {
+                                "width": "100%"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "col",
+                          "class": "col-md-9",
+                          "components": [
+                            {
+                              "type": "checkbox",
+                              "name": "Discontinued",
+                              "triState": true,
+                              "value": "${product.Discontinued}"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "row",
+                      "components": [
+                        {
+                          "type": "col",
+                          "class": "col offset-sm-3",
+                          "components": [
+                            {
+                              "type": "button",
+                              "buttonType": "submit",
+                              "icon": "save",
+                              "text": "Save",
+                              "buttonStyle": "primary"
+                            },
+                            {
+                              "type": "button",
+                              "buttonStyle": "light",
+                              "style": {
+                                "marginLeft": "1rem"
+                              },
+                              "text": "Cancel",
+                              "events": {
+                                "click": [
+                                  {
+                                    "type": "back"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "events": {
+                    "submit": [
+                      {
+                        "error": [
+                          {
+                            "name": "hasChanges",
+                            "type": "set",
+                            "value": "result.status == 412"
+                          },
+                          {
+                            "name": "canEdit",
+                            "type": "set",
+                            "value": "!(result.status == 400)"
+                          },
+                          {
+                            "detail": "Unable to update Product",
+                            "severity": "error",
+                            "summary": "Error",
+                            "type": "notify"
+                          }
+                        ],
+                        "name": "ConData.updateProduct",
+                        "parameters": [
+                          {
+                            "name": "ProductID",
+                            "value": "${parameters.ProductID}"
+                          },
+                          {
+                            "name": "Product",
+                            "value": "${event}"
+                          },
+                          {
+                            "name": "$expand",
+                            "value": "Supplier,Category"
+                          }
+                        ],
+                        "then": [
+                          {
+                            "type": "back"
+                          }
+                        ],
+                        "type": "invoke"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "events": {
+    "load": [
+      {
+        "name": "hasChanges",
+        "type": "set",
+        "value": "false"
+      },
+      {
+        "name": "canEdit",
+        "type": "set",
+        "value": "true"
+      },
+      {
+        "name": "ConData.getProductByProductID",
+        "parameters": [
+          {
+            "name": "ProductID",
+            "value": "${parameters.ProductID}"
+          }
+        ],
+        "then": [
+          {
+            "name": "product",
+            "type": "set",
+            "value": "${result}"
+          },
+          {
+            "name": "ConData.getSupplierBySupplierID",
+            "parameters": [
+              {
+                "name": "SupplierID",
+                "value": "${this.product.SupplierID}"
+              }
+            ],
+            "then": [
+              {
+                "name": "getBySuppliersForSupplierIDResult",
+                "type": "set",
+                "value": "${result}"
+              }
+            ],
+            "condition": "this.product.SupplierID != null",
+            "type": "invoke"
+          },
+          {
+            "name": "ConData.getCategoryByCategoryID",
+            "parameters": [
+              {
+                "name": "CategoryID",
+                "value": "${this.product.CategoryID}"
+              }
+            ],
+            "then": [
+              {
+                "name": "getByCategoriesForCategoryIDResult",
+                "type": "set",
+                "value": "${result}"
+              }
+            ],
+            "condition": "this.product.CategoryID != null",
+            "type": "invoke"
+          }
+        ],
+        "error": [
+          {
+            "name": "canEdit",
+            "type": "set",
+            "value": "!(result.status == 400)"
+          }
+        ],
+        "type": "invoke"
+      },
+      {
+        "name": "getSuppliersForSupplierIDPageSize",
+        "type": "set",
+        "value": "10"
+      },
+      {
+        "name": "ConData.getSuppliers",
+        "parameters": [
+          {
+            "name": "$top",
+            "value": "${getSuppliersForSupplierIDPageSize}"
+          },
+          {
+            "name": "$skip",
+            "value": "0"
+          },
+          {
+            "name": "$count",
+            "value": "true"
+          }
+        ],
+        "then": [
+          {
+            "name": "getSuppliersForSupplierIDResult",
+            "type": "set",
+            "value": "${result.value}"
+          },
+          {
+            "name": "getSuppliersForSupplierIDCount",
+            "type": "set",
+            "value": "result['@odata.count']"
+          }
+        ],
+        "type": "invoke"
+      },
+      {
+        "name": "getCategoriesForCategoryIDPageSize",
+        "type": "set",
+        "value": "10"
+      },
+      {
+        "name": "ConData.getCategories",
+        "parameters": [
+          {
+            "name": "$top",
+            "value": "${getCategoriesForCategoryIDPageSize}"
+          },
+          {
+            "name": "$skip",
+            "value": "0"
+          },
+          {
+            "name": "$count",
+            "value": "true"
+          }
+        ],
+        "then": [
+          {
+            "name": "getCategoriesForCategoryIDResult",
+            "type": "set",
+            "value": "${result.value}"
+          },
+          {
+            "name": "getCategoriesForCategoryIDCount",
+            "type": "set",
+            "value": "result['@odata.count']"
+          }
+        ],
+        "type": "invoke"
+      }
+    ]
+  },
+  "name": "Edit Product",
+  "layout": "Main",
+  "access": [
+    "SuperAdmin"
+  ]
+}

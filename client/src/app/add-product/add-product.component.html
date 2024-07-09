@@ -1,0 +1,112 @@
+<rz-content #content1 container="main">
+  <div class="row">
+    <div class="col-md-12">
+      <rz-template-form #form0 (submit)="form0Submit($event)">
+        <div [ngStyle]="{'marginBottom': '1rem'}" class="row">
+          <div class="col-md-3">
+            <rz-label #productNameLabel text="Product Name" component="ProductName" [style]="{'width': '100%'}">
+            </rz-label>
+          </div>
+          <div class="col-md-9">
+            <rz-textbox #productName [maxLength]="100" [style]="{'display': 'block', 'width': '100%'}" name="ProductName">
+            </rz-textbox>
+            <rz-required-validator #productNameRequiredValidator [component]="productName" text="ProductName is required" [style]="{'position': 'absolute'}">
+            </rz-required-validator>
+          </div>
+        </div>
+        <div [ngStyle]="{'marginBottom': '1rem'}" class="row">
+          <div class="col-md-3">
+            <rz-label #supplierIdLabel text="Supplier" component="SupplierID" [style]="{'width': '100%'}">
+            </rz-label>
+          </div>
+          <div class="col-md-9">
+            <rz-dropdown-datagrid #supplierId [data]="getSuppliersForSupplierIDResult" textProperty="SupplierName" valueProperty="SupplierID" placeholder="Choose Supplier" [count]="getSuppliersForSupplierIDCount" [pageSize]="getSuppliersForSupplierIDPageSize" [style]="{'display': 'block', 'width': '100%'}" emptyText="No records to display." searchText="Search..." name="SupplierID" (loadData)="SupplierIDLoadData($event)">
+            </rz-dropdown-datagrid>
+            <rz-required-validator #supplierIdRequiredValidator [component]="supplierId" text="SupplierID is required" [style]="{'position': 'absolute'}">
+            </rz-required-validator>
+          </div>
+        </div>
+        <div [ngStyle]="{'marginBottom': '1rem'}" class="row">
+          <div class="col-md-3">
+            <rz-label #categoryIdLabel text="Category" component="CategoryID" [style]="{'width': '100%'}">
+            </rz-label>
+          </div>
+          <div class="col-md-9">
+            <rz-dropdown-datagrid #categoryId [data]="getCategoriesForCategoryIDResult" textProperty="CategoryName" valueProperty="CategoryID" placeholder="Choose Category" [count]="getCategoriesForCategoryIDCount" [pageSize]="getCategoriesForCategoryIDPageSize" [style]="{'display': 'block', 'width': '100%'}" emptyText="No records to display." searchText="Search..." name="CategoryID" (loadData)="CategoryIDLoadData($event)">
+            </rz-dropdown-datagrid>
+            <rz-required-validator #categoryIdRequiredValidator [component]="categoryId" text="CategoryID is required" [style]="{'position': 'absolute'}">
+            </rz-required-validator>
+          </div>
+        </div>
+        <div [ngStyle]="{'marginBottom': '1rem'}" class="row">
+          <div class="col-md-3">
+            <rz-label #quantityPerUnitLabel text="Quantity Per Unit" component="QuantityPerUnit" [style]="{'width': '100%'}">
+            </rz-label>
+          </div>
+          <div class="col-md-9">
+            <rz-textbox #quantityPerUnit [maxLength]="50" [style]="{'width': '100%'}" name="QuantityPerUnit">
+            </rz-textbox>
+          </div>
+        </div>
+        <div [ngStyle]="{'marginBottom': '1rem'}" class="row">
+          <div class="col-md-3">
+            <rz-label #unitPriceLabel text="Unit Price" component="UnitPrice" [style]="{'width': '100%'}">
+            </rz-label>
+          </div>
+          <div class="col-md-9">
+            <rz-numeric #unitPrice [style]="{'width': '100%'}" name="UnitPrice">
+            </rz-numeric>
+          </div>
+        </div>
+        <div [ngStyle]="{'marginBottom': '1rem'}" class="row">
+          <div class="col-md-3">
+            <rz-label #unitsInStockLabel text="Units In Stock" component="UnitsInStock" [style]="{'width': '100%'}">
+            </rz-label>
+          </div>
+          <div class="col-md-9">
+            <rz-numeric #unitsInStock [style]="{'width': '100%'}" name="UnitsInStock">
+            </rz-numeric>
+          </div>
+        </div>
+        <div [ngStyle]="{'marginBottom': '1rem'}" class="row">
+          <div class="col-md-3">
+            <rz-label #unitsOnOrderLabel text="Units On Order" component="UnitsOnOrder" [style]="{'width': '100%'}">
+            </rz-label>
+          </div>
+          <div class="col-md-9">
+            <rz-numeric #unitsOnOrder [style]="{'width': '100%'}" name="UnitsOnOrder">
+            </rz-numeric>
+          </div>
+        </div>
+        <div [ngStyle]="{'marginBottom': '1rem'}" class="row">
+          <div class="col-md-3">
+            <rz-label #reorderLevelLabel text="Reorder Level" component="ReorderLevel" [style]="{'width': '100%'}">
+            </rz-label>
+          </div>
+          <div class="col-md-9">
+            <rz-numeric #reorderLevel [style]="{'width': '100%'}" name="ReorderLevel">
+            </rz-numeric>
+          </div>
+        </div>
+        <div [ngStyle]="{'marginBottom': '1rem'}" class="row">
+          <div class="col-md-3">
+            <rz-label #discontinuedLabel text="Discontinued" component="Discontinued" [style]="{'width': '100%'}">
+            </rz-label>
+          </div>
+          <div class="col-md-9">
+            <rz-checkbox #discontinued [triState]="true" name="Discontinued">
+            </rz-checkbox>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col offset-sm-3">
+            <rz-button #button1 buttonType="submit" icon="save" text="Save" buttonStyle="primary">
+            </rz-button>
+            <rz-button #button2 buttonStyle="light" [style]="{'marginLeft': '1rem'}" text="Cancel" (click)="button2Click($event)">
+            </rz-button>
+          </div>
+        </div>
+      </rz-template-form>
+    </div>
+  </div>
+</rz-content>

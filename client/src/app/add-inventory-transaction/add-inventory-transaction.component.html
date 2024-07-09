@@ -1,0 +1,62 @@
+<rz-content #content1 container="main">
+  <div class="row">
+    <div class="col-md-12">
+      <rz-template-form #form0 (submit)="form0Submit($event)">
+        <div [ngStyle]="{'marginBottom': '1rem'}" class="row">
+          <div class="col-md-3">
+            <rz-label #productIdLabel text="Product" component="ProductID" [style]="{'width': '100%'}">
+            </rz-label>
+          </div>
+          <div class="col-md-9">
+            <rz-dropdown-datagrid #productId [data]="getProductsForProductIDResult" textProperty="ProductName" valueProperty="ProductID" placeholder="Choose Product" [count]="getProductsForProductIDCount" [pageSize]="getProductsForProductIDPageSize" [style]="{'display': 'block', 'width': '100%'}" emptyText="No records to display." searchText="Search..." name="ProductID" (loadData)="ProductIDLoadData($event)">
+            </rz-dropdown-datagrid>
+            <rz-required-validator #productIdRequiredValidator [component]="productId" text="ProductID is required" [style]="{'position': 'absolute'}">
+            </rz-required-validator>
+          </div>
+        </div>
+        <div [ngStyle]="{'marginBottom': '1rem'}" class="row">
+          <div class="col-md-3">
+            <rz-label #quantityLabel text="Quantity" component="Quantity" [style]="{'width': '100%'}">
+            </rz-label>
+          </div>
+          <div class="col-md-9">
+            <rz-numeric #quantity [style]="{'display': 'block', 'width': '100%'}" name="Quantity">
+            </rz-numeric>
+            <rz-required-validator #quantityRequiredValidator [component]="quantity" text="Quantity is required" [style]="{'position': 'absolute'}">
+            </rz-required-validator>
+          </div>
+        </div>
+        <div [ngStyle]="{'marginBottom': '1rem'}" class="row">
+          <div class="col-md-3">
+            <rz-label #transactionDateLabel text="Transaction Date" component="TransactionDate" [style]="{'width': '100%'}">
+            </rz-label>
+          </div>
+          <div class="col-md-9">
+            <rz-datepicker #transactionDate [style]="{'width': '100%'}" name="TransactionDate">
+            </rz-datepicker>
+          </div>
+        </div>
+        <div [ngStyle]="{'marginBottom': '1rem'}" class="row">
+          <div class="col-md-3">
+            <rz-label #transactionTypeLabel text="Transaction Type" component="TransactionType" [style]="{'width': '100%'}">
+            </rz-label>
+          </div>
+          <div class="col-md-9">
+            <rz-textbox #transactionType [maxLength]="20" [style]="{'display': 'block', 'width': '100%'}" name="TransactionType">
+            </rz-textbox>
+            <rz-required-validator #transactionTypeRequiredValidator [component]="transactionType" text="TransactionType is required" [style]="{'position': 'absolute'}">
+            </rz-required-validator>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col offset-sm-3">
+            <rz-button #button1 buttonType="submit" icon="save" text="Save" buttonStyle="primary">
+            </rz-button>
+            <rz-button #button2 buttonStyle="light" [style]="{'marginLeft': '1rem'}" text="Cancel" (click)="button2Click($event)">
+            </rz-button>
+          </div>
+        </div>
+      </rz-template-form>
+    </div>
+  </div>
+</rz-content>
